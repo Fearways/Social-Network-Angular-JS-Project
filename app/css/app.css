@@ -1,10 +1,111 @@
-.pesho {
-	color:red;
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    margin-bottom: 60px;
+}
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #3E3F3A;
+    padding-top: 25px;
 }
 
-.pesho:hover {
-	color:blue 
+small{
+    margin-right: 55px;
+    color: #ffffff;
+    font-family: sans-serif;
 }
-.even_row {
-	background: red;
+
+.form-horizontal {
+    padding: 10px;
+    border-radius: 20px;
+    background-color: #f2f5f5;
+    margin-bottom: 30px;
+}
+
+
+.jumbotron {
+	padding: 20px;
+	border-radius: 20px;
+    background-color: #cad2f5;
+}
+
+body>div>div.row {
+	margin: 0;
+}
+
+.row {
+    margin: 0;
+}
+
+.navbar img {
+    width: 30px;
+}
+
+.modal {
+    display: block;
+}
+
+.modal img {
+    width: 50px;
+}
+
+.list-group img {
+    max-height: 100%;
+    display: inline-block;
+    vertical-align: text-bottom;
+    float: left;
+}
+
+.list-group h4 {
+    display: inline-block;
+    float: right;
+}
+
+.list-group a {
+    height: 100px;
+}
+
+.request {
+    border-bottom: 1px solid dimgray;
+}
+
+#search {
+    position: relative;
+}
+
+#search-results {
+    position: absolute;
+    top: 50px;
+    right: 25px;
+}
+
+#search-results li {
+    padding: 0;
+}
+
+#search-results li p {
+    text-align: center;
+    margin-top: 5px;
+}
+
+.friend-img {
+    max-width: 100px;
+}
+
+#friend-name {
+    float: right;
+}
+
+#friend-container {
+    width: 100%;
+    height: 100%;
+}
+
+td:hover {
+    background-color: #cccccc;
 }
