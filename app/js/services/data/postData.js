@@ -1,24 +1,10 @@
 'use strict';
 
-socialNetworkApp.factory('friendsData', ['$resource', 'baseUrl', 'credentials', function ($resource, baseUrl, credentials) {
-    function getLoggedUserFriendsPreview() {
+socialNetworkApp.factory('postData', ['$resource', 'baseUrl', 'credentials', function ($resource, baseUrl, credentials) {
+    function getNewsFeed(startPostId, pageSize) {
         var authorization = credentials.getAuthorization();
         return $resource(
-            baseUrl + 'me/friends/preview',
-            null,
-            {
-                'get': {
-                    method: 'GET',
-                    headers: {'Authorization': authorization}
-                }
-            })
-            .get();
-    }
-
-    function getLoggedUserFriends() {
-        var authorization = credentials.getAuthorization();
-        return $resource(
-            baseUrl + 'me/friends',
+            baseUrl + 'me/feed?StartPostId=' + (startPostId || '') + '&PageSize=' + pageSize,
             null,
             {
                 'get': {
@@ -30,24 +16,10 @@ socialNetworkApp.factory('friendsData', ['$resource', 'baseUrl', 'credentials', 
             .get();
     }
 
-    function getOtherUserFriendsPreview(username) {
+    function getUserWall(username, startPostId, pageSize) {
         var authorization = credentials.getAuthorization();
         return $resource(
-            baseUrl + 'users/' + username + '/friends/preview',
-            null,
-            {
-                'get': {
-                    method: 'GET',
-                    headers: {'Authorization': authorization}
-                }
-            })
-            .get();
-    }
-
-    function getOtherUserFriends(username) {
-        var authorization = credentials.getAuthorization();
-        return $resource(
-            baseUrl + 'users/' + username + '/friends',
+            baseUrl + 'users/'+ username + '/wall?StartPostId=' + (startPostId || '') + '&PageSize=' + pageSize,
             null,
             {
                 'get': {
@@ -59,10 +31,52 @@ socialNetworkApp.factory('friendsData', ['$resource', 'baseUrl', 'credentials', 
             .get();
     }
 
-    function getFriendRequests() {
+    function addPost(post) {
         var authorization = credentials.getAuthorization();
         return $resource(
-            baseUrl + 'me/requests',
+            baseUrl + 'posts',
+            null,
+            {
+                'save': {
+                    method: 'POST',
+                    headers: {'Authorization': authorization}
+                }
+            })
+            .save(post);
+    }
+
+    function editPost(postId, postContent) {
+        var authorization = credentials.getAuthorization();
+        return $resource(
+            baseUrl + 'posts/' + postId,
+            null,
+            {
+                'update': {
+                    method: 'PUT',
+                    headers: {'Authorization': authorization}
+                }
+            })
+            .update(postContent);
+    }
+
+    function deletePost(postId) {
+        var authorization = credentials.getAuthorization();
+        return $resource(
+            baseUrl + 'posts/' + postId,
+            null,
+            {
+                'delete': {
+                    method: 'DELETE',
+                    headers: {'Authorization': authorization}
+                }
+            })
+            .delete();
+    }
+
+    function getPostComments(postId) {
+        var authorization = credentials.getAuthorization();
+        return $resource(
+            baseUrl + 'posts/' + postId + '/comments',
             null,
             {
                 'get': {
@@ -74,10 +88,10 @@ socialNetworkApp.factory('friendsData', ['$resource', 'baseUrl', 'credentials', 
             .get();
     }
 
-    function sendFriendRequest(name) {
+    function likePost(postId) {
         var authorization = credentials.getAuthorization();
         return $resource(
-            baseUrl + 'me/requests/' + name,
+            baseUrl + 'posts/' + postId + '/likes',
             null,
             {
                 'save': {
@@ -88,42 +102,28 @@ socialNetworkApp.factory('friendsData', ['$resource', 'baseUrl', 'credentials', 
             .save();
     }
 
-    function approveFriendRequest(requestId) {
+    function unlikePost(postId) {
         var authorization = credentials.getAuthorization();
         return $resource(
-            baseUrl + 'me/requests/' + requestId + '?status=approved',
+            baseUrl + 'posts/' + postId + '/likes',
             null,
             {
-                'update': {
-                    method: 'PUT',
+                'delete': {
+                    method: 'DELETE',
                     headers: {'Authorization': authorization}
                 }
             })
-            .update();
-    }
-
-    function rejectFriendRequest(requestId) {
-        var authorization = credentials.getAuthorization();
-        return $resource(
-            baseUrl + 'me/requests/' + requestId + '?status=rejected',
-            null,
-            {
-                'update': {
-                    method: 'PUT',
-                    headers: {'Authorization': authorization}
-                }
-            })
-            .update();
+            .delete();
     }
 
     return {
-        getLoggedUserFriendsPreview: getLoggedUserFriendsPreview,
-        getLoggedUserFriends: getLoggedUserFriends,
-        getOtherUserFriendsPreview: getOtherUserFriendsPreview,
-        getOtherUserFriends: getOtherUserFriends,
-        getFriendRequests: getFriendRequests,
-        sendFriendRequest: sendFriendRequest,
-        approveFriendRequest: approveFriendRequest,
-        rejectFriendRequest: rejectFriendRequest
+        getNewsFeed: getNewsFeed,
+        getUserWall: getUserWall,
+        addPost: addPost,
+        editPost: editPost,
+        deletePost: deletePost,
+        getPostComments: getPostComments,
+        likePost: likePost,
+        unlikePost: unlikePost
     }
 }]);
